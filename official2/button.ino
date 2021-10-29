@@ -40,7 +40,7 @@ void button_reading(){
         if(i == 0){
           if(buttonCounter[i] + 2 >= DURATION_FOR_AUTO_OPERATION_1 / 10){
             buttonFlag[i] = BEING_PRESSED_MORE_1;
-            if((((buttonCounter[i] + 2) * TIMER_CYCLE - DURATION_FOR_AUTO_OPERATION_1 / 10) % DURATION_FOR_INTERVAL_OPERATION_1) == 0){
+            if((((buttonCounter[i] + 2) * TIMER_CYCLE - DURATION_FOR_AUTO_OPERATION_1) % DURATION_FOR_INTERVAL_OPERATION_1) == 0){
               buttonFlag[i] = BEING_PRESSED_MORE_1_INTERVAL;
               buttonCounter[i] = DURATION_FOR_AUTO_OPERATION_1 - 2;
             }
