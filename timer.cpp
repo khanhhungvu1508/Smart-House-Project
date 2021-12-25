@@ -1,4 +1,8 @@
-#define NUMBER_OF_SOFTWARE_TIMER 3
+#include "common.h"
+#include "timer.h"
+#include "Arduino.h"
+
+#define NUMBER_OF_SOFTWARE_TIMER 2
 
 int timerCounter[NUMBER_OF_SOFTWARE_TIMER];
 int timerFlag[NUMBER_OF_SOFTWARE_TIMER];
@@ -14,18 +18,18 @@ int getTimerFlag(int index){
   return timerFlag[index];
 }
 
-void init_timer(){
-  for(int i = 0; i < NUMBER_OF_SOFTWARE_TIMER; i++){
-    setTimer(i, TIMER_CYCLE);
-  }
-}
-
 void timer_run(){
   for(int i = 0; i < NUMBER_OF_SOFTWARE_TIMER; i++){
     if(timerCounter[i] > 0){
       timerCounter[i]--;
       if(timerCounter[i] == 0) timerFlag[i] = 1;
     }
+  }
+}
+
+void init_timer_software(){
+  for(int i = 0; i < NUMBER_OF_SOFTWARE_TIMER; i++){
+    setTimer(i, TIMER_CYCLE);
   }
 }
 

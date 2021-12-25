@@ -1,3 +1,9 @@
+#include "Arduino.h"
+#include "_button.h"
+#include "scheduler.h"
+#include "AC.h"
+#include "common.h"
+
 #define PRESSED LOW
 #define RELEASED HIGH
 
@@ -24,6 +30,8 @@ int buttonDebounce2[NUMBER_OF_BUTTONS];
 int buttonDebounce3[NUMBER_OF_BUTTONS];
 int buttonCounter[NUMBER_OF_BUTTONS];
 STATE buttonFlag[NUMBER_OF_BUTTONS];
+
+extern int mode;
 
 void init_button_reading(){
   for(int i = 0; i < NUMBER_OF_BUTTONS; i++){
@@ -89,11 +97,11 @@ void fsm_button_reading(){
         break;
       case BE_PRESSED:
         if(i == 0) digitalWrite(13, !digitalRead(LED_PIN));
-        if(i == 1) increaseMode();
-        if(i == 2 && mode == 1) increaseACTemperature();
-        if(i == 3 && mode == 1) decreaseACTemperature();
-        if(i == 2 && mode == -1) increaseACAuto();
-        if(i == 3 && mode == -1) decreaseACAuto();
+        if(i == 1) SCH_Add_Task(task_increaseMode, 0, 0);
+        if(i == 2 && mode == 1) SCH_Add_Task(task_increaseACTemperature, 0, 0);
+        if(i == 3 && mode == 1) SCH_Add_Task(task_decreaseACTemperature, 0, 0);
+        if(i == 2 && mode == -1) SCH_Add_Task(task_increaseACAuto, 0, 0);
+        if(i == 3 && mode == -1) SCH_Add_Task(task_decreaseACAuto, 0, 0);
         buttonFlag[i] = BEING_PRESSED;
         break;
       case BEING_PRESSED_MORE_1:
@@ -105,7 +113,7 @@ void fsm_button_reading(){
       case BEING_PRESSED_MORE_2:
         break;
       case BE_PRESSED_MORE_2:
-        changeAutoMode();
+        SCH_Add_Task(task_changeAutoMode, 0, 0);
         buttonFlag[i] = BEING_PRESSED_MORE_2;
         break;
       default:

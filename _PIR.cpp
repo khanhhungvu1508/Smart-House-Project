@@ -1,17 +1,21 @@
 #include<LiquidCrystal.h>
+#include "Arduino.h"
 
 #define DETECT_PIN 2
 #define IN 4
 #define OUT 5
 
-void init_PIR(int numPeople){
+int numPeople = 0;
+int detectInOut = 0;
+int firstTime = 0;
+
+void init_PIR(){
   pinMode(IN, INPUT_PULLUP);
   pinMode(OUT, INPUT_PULLUP);
   pinMode(DETECT_PIN, OUTPUT);
-  PIR_display(numPeople);
 }
 
-void bidirectional_visitor_counter(int &numPeople, int &detectInOut, int &firstTime)
+void bidirectional_visitor_counter()
 { 
   if (digitalRead(IN) == 0 && digitalRead(OUT) == 0) {
     firstTime = 0;
